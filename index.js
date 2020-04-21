@@ -8,23 +8,23 @@ app.use(bodyParser.json())
 let notes = [
   {
     id: 1,
-    content: 'Arto Hellas',
+    name: 'Arto Hellas',
     number: '151017-12-10'
   },
   {
     id: 2,
-    content: 'Martti Tienari',
+    name: 'Martti Tienari',
     number: '242011-12-10'
   },
 
   {
     id: 3,
-    content: 'Arto Järvinen',
+    name: 'Arto Järvinen',
     number: '332017-11-10'
   },
   {
     id: 4,
-    content: 'Letvo Kutvonen',
+    name: 'Letvo Kutvonen',
     number: '422017-12-11'
   }
 ]
@@ -34,6 +34,11 @@ app.post('/api/persons/', (request, response) => {
   const note = request.body
   console.log(note)
   note.id=Math.round(Math.random()*100000)
+
+if (!note.name)
+	response.status(400).json({ error: 'name not specified' })
+if (notes.find((arg)=>arg.name==note.name))
+	response.status(400).json({ error: 'name must be unique' })
 notes = notes.concat(note)
   response.json(note)
 })
