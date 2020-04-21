@@ -1,7 +1,9 @@
 const express = require('express')
 const app = express()
 
+const bodyParser = require('body-parser')
 
+app.use(bodyParser.json())
 
 let notes = [
   {
@@ -28,8 +30,13 @@ let notes = [
 ]
 
 
-
-
+app.post('/api/persons/', (request, response) => {
+  const note = request.body
+  console.log(note)
+  note.id=Math.round(Math.random()*100000)
+notes = notes.concat(note)
+  response.json(note)
+})
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
